@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customizable Animated Message</title>
+    <style>
+        /* General styles for responsiveness */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Container for the message and animations */
+        .message-container {
+            position: relative;
+            text-align: center;
+            z-index: 1;
+            color: white; /* Default text color; customize based on theme */
+            width: 80%;
+            max-width: 800px;
+        }
+
+        /* Message text styles */
+        .message {
+            font-size: 3em; /* Adjust for responsiveness */
+            opacity: 0;
+            animation: fadeInText 2s ease-in-out forwards, colorChange 5s infinite alternate;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* For better visibility */
+        }
+
+        /* Background element for theme-specific animations */
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(to top, #000, #ff4500, #ffd700); /* Default sunrise gradient */
+            animation: sunriseAnimation 10s ease-in-out infinite alternate;
+        }
+
+        /* Fireworks particle container */
+        .fireworks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Individual firework particle */
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: explode 1s ease-out forwards;
+        }
+
+        /* Keyframe animations */
+
+        /* Text fade-in animation */
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Text color change animation (customize colors for theme) */
+        @keyframes colorChange {
+            0% { color: #ff4500; } /* Orange for sunrise */
+            50% { color: #ffd700; } /* Yellow */
+            100% { color: #ff69b4; } /* Pink for fireworks vibe */
+        }
+
+        /* Sunrise background gradient animation */
+        @keyframes sunriseAnimation {
+            0% { background: linear-gradient(to top, #000, #ff4500, #ffd700); }
+            100% { background: linear-gradient(to top, #191970, #ff8c00, #ffffe0); }
+        }
+
+        /* Firework explosion animation (customize timing/speed) */
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(1) translate(var(--dx), var(--dy)); opacity: 0; }
+        }
+
+        /* Responsiveness with media queries */
+        @media (max-width: 768px) {
+            .message {
+                font-size: 2em; /* Smaller font on mobile */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .message {
+                font-size: 1.5em;
+            }
+            .message-container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="fireworks"></div>
+    <div class="message-container">
+        <div class="message">
+            <!-- CUSTOMIZATION POINT: Set your custom text message here -->
+            Yumi sta lo ples ohh
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for dynamic fireworks animation
+        function createFirework() {
+            const fireworks = document.querySelector('.fireworks');
+            const particleCount = 20; // CUSTOMIZATION POINT: Adjust number of particles per firework
+            const colors = ['#ff4500', '#ffd700', '#ff69b4', '#ffffff']; // CUSTOMIZATION POINT: Theme colors for particles (sunrise/fireworks inspired)
+
+            // Random position for firework burst
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Random direction and distance for explosion
+                const angle = Math.random() * 360;
+                const distance = Math.random() * 100 + 50; // CUSTOMIZATION POINT: Adjust explosion radius
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance;
+                
+                particle.style.setProperty('--dx', `${dx}px`);
+                particle.style.setProperty('--dy', `${dy}px`);
+                
+                // Random delay for staggered explosion
+                particle.style.animationDelay = `${Math.random() * 0.5}s`;
+                
+                fireworks.appendChild(particle);
+                
+                // Remove particle after animation
+                setTimeout(() => particle.remove(), 1500);
+            }
+        }
+
+        // Launch fireworks at intervals
+        setInterval(createFirework, 2000); // CUSTOMIZATION POINT: Adjust interval (ms) for firework frequency
+
+        // Make it responsive: Recreate on resize if needed, but animations handle it inherently
+    </script>
+
+    <!-- 
+    CUSTOMIZATION GUIDANCE:
+    - Message: Change the text inside the .message div.
+    - Theme/Style: 
+      - For different themes, modify colors in CSS keyframes (e.g., colorChange, sunriseAnimation) and JS colors array.
+      - Example: For a 'night' theme, change gradients to blues/blacks and particles to stars.
+    - Animation Parameters:
+      - Adjust durations, easings in @keyframes (e.g., fadeInText duration from 2s to something else).
+      - In JS: Change particleCount, explosion distance, interval for fireworks.
+      - Add more animations: E.g., add 'bounce' to text by extending fadeInText keyframes with scale transforms.
+    - Responsiveness: Already handled with media queries; add more if needed for specific devices.
+    - Reusability: To reuse for other texts/themes, copy the code and modify the customization points.
+    -->
+</html>
