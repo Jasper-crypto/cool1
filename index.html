@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Send Good Morning Message</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            background-color: #FFF8DC;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #128C7E;
+        }
+    </style>
+</head>
+<body>
+    <h1>Good Morning Message 💛</h1>
+    <p>Enter your loved one's name:</p>
+    <input type="text" id="name" placeholder="Name here">
+    <br>
+    <button onclick="sendWhatsApp()">Send on WhatsApp</button>
+
+    <script>
+        function sendWhatsApp() {
+            const name = document.getElementById('name').value.trim();
+            if (!name) {
+                alert("Please enter a name!");
+                return;
+            }
+            const message = `Good Morning ${name}! 🌞 Hope you have a wonderful day! ❤️`;
+            const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
